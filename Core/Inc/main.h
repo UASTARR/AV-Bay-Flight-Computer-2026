@@ -67,14 +67,14 @@ void Error_Handler(void);
 #define IMU_nCS_GPIO_Port GPIOA
 #define MAG_nCS_Pin GPIO_PIN_4
 #define MAG_nCS_GPIO_Port GPIOC
+#define SW_I2C_SDA_Pin GPIO_PIN_10
+#define SW_I2C_SDA_GPIO_Port GPIOB
+#define SW_I2C_SCL_Pin GPIO_PIN_11
+#define SW_I2C_SCL_GPIO_Port GPIOB
 #define SPI2_CS_Pin GPIO_PIN_12
 #define SPI2_CS_GPIO_Port GPIOB
 #define FC_0_Pin GPIO_PIN_5
 #define FC_0_GPIO_Port GPIOB
-#define SW_I2C_SDA_Pin GPIO_PIN_6
-#define SW_I2C_SDA_GPIO_Port GPIOB
-#define SW_I2C_SCL_Pin GPIO_PIN_7
-#define SW_I2C_SCL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

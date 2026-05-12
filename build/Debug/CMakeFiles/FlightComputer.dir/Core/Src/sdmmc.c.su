@@ -1,3 +1,0 @@
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/sdmmc.c:31:6:MX_SDMMC1_SD_Init	8	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/sdmmc.c:62:6:HAL_SD_MspInit	176	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/sdmmc.c:117:6:HAL_SD_MspDeInit	16	static

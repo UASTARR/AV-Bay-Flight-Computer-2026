@@ -1,5 +1,0 @@
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/..\software_i2c\dwt_stm32_delay.h:18:22:DWT_Delay_us	24	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/main.c:75:5:main	24	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/main.c:143:6:SystemClock_Config	88	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/main.c:197:6:MPU_Config	24	static
-C:/Users/alexk/Desktop/FlightComputer/Core/Src/main.c:228:6:Error_Handler	4	static,ignoring_inline_asm

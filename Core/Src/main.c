@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-
 #include "main.h"
 #include "adc.h"
 #include "can.h"
@@ -26,13 +25,19 @@
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_otg.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "..\software_i2c\stm32_sw_i2c.h"
+#include <stdio.h>
+#include "usbd_cdc_if.h"
+#include "..\sensors\bme680.h"
+#include "..\sensors\ms5611.h"
+#include "..\sensors\icm40609d.h"
+#include "..\sensors\mmc5983ma.h"
 #include "..\software_i2c\dwt_stm32_delay.h"
+#include "..\software_i2c\stm32_sw_i2c.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,7 +47,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define SLAVE_ADDR 0x1E
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -77,7 +82,6 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-	uint8_t _txBuffer[6];
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -96,33 +100,30 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  DWT_Delay_Init();
+  I2C_init();
+  DWT_Delay_us(1000); //1 ms
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  I2C_init();
-  DWT_Delay_us(1000); //1 ms
   MX_GPIO_Init();
   MX_ADC2_Init();
   MX_CAN1_Init();
-  MX_I2C2_Init();
+  MX_I2C1_Init();
   //MX_SDMMC1_SD_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_UART4_Init();
-  MX_USB_OTG_FS_USB_Init();
   MX_TIM1_Init();
-
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-	//Example transmit
-	_txBuffer[0] = 0x05;
-	_txBuffer[1] = 0x04;
-	_txBuffer[2] = 0x15;
-	_txBuffer[3] = 0x00;
-	//HAL_GPIO_WritePin(SW_I2C_SDA_GPIO_Port, SW_I2C_SDA_Pin, GPIO_PIN_RESET);
-	int x = I2C_transmit(SLAVE_ADDR, _txBuffer, 4); //4 is the size of the transmission (4 bytes)
+  BME680_Init();
+  MS5611_Init();
+  ICM40609D_Init();
+  MMC5983MA_Init();
+  printf("beast mode activated\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -132,6 +133,36 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	    BME680_Data_t   bme  = {0};
+	    MS5611_Data_t   ms   = {0};
+	    ICM40609D_Data_t icm = {0};
+	    MMC5983MA_Data_t mag = {0};
+
+	    BME680_Read_All(&bme);
+	    MS5611_Read_All(&ms);
+	    ICM40609D_Read_All(&icm);
+	    MMC5983MA_Read_All(&mag);
+
+	    printf("--- BME680 ---\r\n");
+	    printf("  Temp:  %.2f C\r\n",  bme.temperature);
+	    printf("  Press: %.2f hPa\r\n", bme.pressure);
+	    printf("  Hum:   %.2f %%\r\n", bme.humidity);
+	    printf("  Gas:   %.0f ohm\r\n", bme.gas);
+
+	    printf("--- MS5611 ---\r\n");
+	    printf("  Press: %.2f hPa\r\n", ms.pressure);
+	    printf("  Alt:   %.2f m\r\n",   ms.altitude);
+
+	    printf("--- ICM-40609D ---\r\n");
+	    printf("  Accel: %.3f  %.3f  %.3f g\r\n",   icm.accel_x, icm.accel_y, icm.accel_z);
+	    printf("  Gyro:  %.2f  %.2f  %.2f dps\r\n", icm.gyro_x,  icm.gyro_y,  icm.gyro_z);
+	    printf("  Temp:  %.1f C\r\n", icm.temp);
+
+	    printf("--- MMC5983MA ---\r\n");
+	    printf("  Mag:   %.4f  %.4f  %.4f G\r\n", mag.x, mag.y, mag.z);
+	    printf("  Temp:  %.1f C\r\n\r\n", mag.temp);
+
+	    //HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -189,6 +220,19 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+// redirect printf to CDC / virtual com port
+int _write(int file, char *ptr, int len)
+{
+//   for usb printf
+   CDC_Transmit_FS((uint8_t *)ptr, (uint16_t)len);
+   HAL_Delay(1);
+   return len;
+
+  // for uart/stlink printf
+//  HAL_UART_Transmit(&huart4, (uint8_t *)ptr, (uint16_t)len, HAL_MAX_DELAY);
+//  return len;
+}
 
 /* USER CODE END 4 */
 

@@ -201,9 +201,8 @@ _Bool I2C_transmit(uint8_t address, uint8_t data[], uint8_t size)
         {
             if (i == size - 1)
             {
-//                if (I2C_write_byte(data[i], false, false))
-//                    return true;
-            	I2C_write_byte(data[i], false, false);
+                if (I2C_write_byte(data[i], false, true))
+                    return true;
             }
             else
             {
@@ -230,7 +229,9 @@ _Bool I2C_receive(uint8_t address, uint8_t reg[], uint8_t *data, uint8_t reg_siz
         {
             for (int j = 0; j < size; j++)
             {
-                *data++ = I2C_read_byte(false, false); // read data
+                // ACK (true) if we want more bytes, NACK (false) if it's the last one
+                _Bool send_ack = (j < (size - 1));
+                *data++ = I2C_read_byte(send_ack, false);
             }
             I2C_stop_cond();
             return true;
