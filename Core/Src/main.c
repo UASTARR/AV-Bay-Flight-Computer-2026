@@ -147,6 +147,7 @@ int main(void)
 	    printf("  Press: %.2f hPa\r\n", bme.pressure);
 	    printf("  Hum:   %.2f %%\r\n", bme.humidity);
 	    printf("  Gas:   %.0f ohm\r\n", bme.gas);
+	    printf("  Alt:   %.2f m\r\n", bme.altitude);
 
 	    printf("--- MS5611 ---\r\n");
 	    printf("  Press: %.2f hPa\r\n", ms.pressure);

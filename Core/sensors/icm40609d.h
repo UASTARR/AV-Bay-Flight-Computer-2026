@@ -13,14 +13,14 @@ typedef struct {
     float temp;
 } ICM40609D_Data_t;
 
-extern struct zeroData {
+typedef struct {
 	_Bool xsign;
 	_Bool ysign;
 	_Bool zsign;
 	int xindex;
 	int yindex;
 	int zindex;
-};
+} imuZeroData;
 
 
 void ICM40609D_Init(void);

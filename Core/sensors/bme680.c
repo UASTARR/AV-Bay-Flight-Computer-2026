@@ -1,9 +1,14 @@
 #include "bme680.h"
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 static struct bme68x_dev bme;
 static uint8_t           dev_addr = BME680_I2C_ADDRESS;
+
+bmeZeroData bmeZero = {0,288.15,101325};
+//h0 (meters) T0 (kelvin) and P0 (bar), L (lapse rate), R (gas constant)
+//Used for standard atmo model
 
 
 // bme68x fptrs
@@ -67,6 +72,17 @@ void BME680_Init(void)
     status = bme68x_set_conf(&conf, &bme);
     printf("bme68x_set_conf status: %d\r\n", status);
 
+    BME680_Zero();
+
+}
+
+void BME680_Zero() {
+	BME680_Data_t   bme  = {0};
+	BME680_Read_All(&bme);
+
+	bmeZero.h0 = bme.altitude;
+	bmeZero.p0 = bme.pressure*100.0f;
+	bmeZero.t0 = bme.temperature;
 }
 
 void BME680_Read_All(BME680_Data_t *data)
@@ -88,5 +104,6 @@ void BME680_Read_All(BME680_Data_t *data)
         data->pressure    = sensor_data.pressure / 100.0f;  // Pa to hPa
         data->humidity    = sensor_data.humidity;
         data->gas         = (float)sensor_data.gas_resistance;
+        data->altitude	  = bmeZero.h0 + bmeZero.t0/(-0.0065f) * (powf(sensor_data.pressure/bmeZero.p0,0.1902f)-1);
     }
 }

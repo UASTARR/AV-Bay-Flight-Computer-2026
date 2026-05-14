@@ -13,7 +13,14 @@ typedef struct {
     float pressure;
     float humidity;
     float gas;
+    float altitude;
 } BME680_Data_t;
+
+typedef struct {
+	float h0;
+	float t0;
+	float p0;
+} bmeZeroData;
 
 void BME680_Init(void);
 void BME680_Read_All(BME680_Data_t *data);
