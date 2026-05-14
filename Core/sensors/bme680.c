@@ -4,7 +4,6 @@
 
 static struct bme68x_dev bme;
 static uint8_t           dev_addr = BME680_I2C_ADDRESS;
-static uint16_t          heatr_dur_ms = 150;
 
 
 // bme68x fptrs
@@ -68,12 +67,6 @@ void BME680_Init(void)
     status = bme68x_set_conf(&conf, &bme);
     printf("bme68x_set_conf status: %d\r\n", status);
 
-    struct bme68x_heatr_conf heatr = {0};
-    heatr.enable     = BME68X_ENABLE;
-    heatr.heatr_temp = 320;
-    heatr.heatr_dur  = heatr_dur_ms;
-    status = bme68x_set_heatr_conf(BME68X_FORCED_MODE, &heatr, &bme);
-    printf("bme_set_heatr_conf status: %d\r\n", status);
 }
 
 void BME680_Read_All(BME680_Data_t *data)
@@ -85,8 +78,7 @@ void BME680_Read_All(BME680_Data_t *data)
 
     struct bme68x_conf conf = {0};
     bme68x_get_conf(&conf, &bme);
-    uint32_t del_us = bme68x_get_meas_dur(BME68X_FORCED_MODE, &conf, &bme)
-                      + (uint32_t)(heatr_dur_ms * 1000U);
+    uint32_t del_us = bme68x_get_meas_dur(BME68X_FORCED_MODE, &conf, &bme);
     DWT_Delay_us(del_us);
 
     bme68x_get_data(BME68X_FORCED_MODE, &sensor_data, &n_data, &bme);

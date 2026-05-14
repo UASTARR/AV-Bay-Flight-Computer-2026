@@ -1,6 +1,6 @@
 ../Core/sensors/..\software_i2c\dwt_stm32_delay.h:18:22:DWT_Delay_us	2
-../Core/sensors/bme680.c:13:29:bme68x_i2c_write	2
-../Core/sensors/bme680.c:27:29:bme68x_i2c_read	2
-../Core/sensors/bme680.c:39:13:bme68x_delay_us	1
-../Core/sensors/bme680.c:49:6:BME680_Init	1
-../Core/sensors/bme680.c:79:6:BME680_Read_All	2
+../Core/sensors/bme680.c:12:29:bme68x_i2c_write	2
+../Core/sensors/bme680.c:26:29:bme68x_i2c_read	2
+../Core/sensors/bme680.c:38:13:bme68x_delay_us	1
+../Core/sensors/bme680.c:48:6:BME680_Init	1
+../Core/sensors/bme680.c:72:6:BME680_Read_All	2

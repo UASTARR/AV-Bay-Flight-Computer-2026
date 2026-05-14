@@ -123,7 +123,6 @@ int main(void)
   MS5611_Init();
   ICM40609D_Init();
   MMC5983MA_Init();
-  printf("beast mode activated\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */

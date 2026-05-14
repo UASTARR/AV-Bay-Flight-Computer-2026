@@ -13,7 +13,18 @@ typedef struct {
     float temp;
 } ICM40609D_Data_t;
 
+extern struct zeroData {
+	_Bool xsign;
+	_Bool ysign;
+	_Bool zsign;
+	int xindex;
+	int yindex;
+	int zindex;
+};
+
+
 void ICM40609D_Init(void);
 void ICM40609D_Read_All(ICM40609D_Data_t *data);
+void ICM40609D_Zero();
 
 #endif // ICM40609D_H
