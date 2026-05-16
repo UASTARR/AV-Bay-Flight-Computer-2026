@@ -16,8 +16,10 @@ RM := rm -rf
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Core/software_i2c/subdir.mk
 -include Core/sensors/subdir.mk
+-include Core/attitude_estimation/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Core/EKF/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -67,7 +69,7 @@ main-build: Flight\ Computer\ 2025-2026.elf secondary-outputs
 
 # Tool invocations
 Flight\ Computer\ 2025-2026.elf Flight\ Computer\ 2025-2026.map: $(OBJS) $(USER_OBJS) C:\Users\alexk\Desktop\FlightComputer\STM32F732RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Flight Computer 2025-2026.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\alexk\Desktop\FlightComputer\STM32F732RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Flight Computer 2025-2026.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Flight Computer 2025-2026.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\alexk\Desktop\FlightComputer\STM32F732RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Flight Computer 2025-2026.map" -Wl,--gc-sections -static -L"C:\Users\alexk\Desktop\FlightComputer\Drivers\CMSIS\Lib\GCC" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

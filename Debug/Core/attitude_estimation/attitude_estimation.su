@@ -1,0 +1,2 @@
+../Core/attitude_estimation/attitude_estimation.c:13:6:quaternionAttitudeEst	72	static
+../Core/attitude_estimation/attitude_estimation.c:41:6:AttitudeEst	56	static

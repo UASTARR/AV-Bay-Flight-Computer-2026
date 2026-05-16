@@ -23,6 +23,7 @@ typedef struct {
 } bmeZeroData;
 
 void BME680_Init(void);
+void BME680_Zero(void);
 void BME680_Read_All(BME680_Data_t *data);
 
 #endif // BME680_H

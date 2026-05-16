@@ -94,9 +94,9 @@ void MMC5983MA_Read_All(MMC5983MA_Data_t *data)
     uint32_t y_raw = ((uint32_t)raw[2] << 10) | ((uint32_t)raw[3] << 2) | ((raw[6] >> 4) & 0x03);
     uint32_t z_raw = ((uint32_t)raw[4] << 10) | ((uint32_t)raw[5] << 2) | ((raw[6] >> 2) & 0x03);
 
-    data->x = ((float)x_raw - 131072.0f) / MMC_SENSITIVITY;
-    data->y = ((float)y_raw - 131072.0f) / MMC_SENSITIVITY;
-    data->z = ((float)z_raw - 131072.0f) / MMC_SENSITIVITY;
+    data->x = -((float)x_raw - 131072.0f) / MMC_SENSITIVITY;
+    data->y = -((float)y_raw - 131072.0f) / MMC_SENSITIVITY;
+    data->z = -((float)z_raw - 131072.0f) / MMC_SENSITIVITY;
 
     // Read temperature: 1 byte, 0.8°C/LSB, offset at 0 = -75°C
     MMC_WriteReg(MMC_CTRL0, MMC_TM_T);

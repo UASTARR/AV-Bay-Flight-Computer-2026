@@ -22,8 +22,10 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Core/EKF \
 Core/Src \
 Core/Startup \
+Core/attitude_estimation \
 Core/sensors \
 Core/software_i2c \
 Drivers/STM32F7xx_HAL_Driver/Src \
