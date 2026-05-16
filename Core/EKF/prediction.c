@@ -15,6 +15,6 @@ void init(ekf *inst) {
 
 }
 
-void perdictAttitude(ekf *inst) {
+void predictAttitude(ekf *inst) {
 
 }
