@@ -7,7 +7,14 @@
 
 
 #include <stdio.h>
+#include "arm_math.h"
+#include "prediction.h"
 
-void test() {
+
+void init(ekf *inst) {
+
+}
+
+void perdictAttitude(ekf *inst) {
 
 }

@@ -11,12 +11,7 @@
 #include "..\sensors\icm40609d.h"
 #include "..\sensors\mmc5983ma.h"
 
-typedef struct {
-	float qw;
-	float qx;
-	float qy;
-	float qz;
-} quaternion;
+
 
 typedef struct {
 	float x;

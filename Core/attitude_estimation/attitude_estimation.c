@@ -9,8 +9,9 @@
 #include "attitude_estimation.h"
 #include "..\sensors\icm40609d.h"
 #include "..\sensors\mmc5983ma.h"
+#include "..\EKF\ekf.h"
 
-void quaternionAttitudeEst(quaternion *quat,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData) {
+void qernionAttitudeEst(quat *q,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData) {
 
 	float imag = 1/sqrtf(powf(icmData->accel_x,2) + powf(icmData->accel_y,2) + powf(icmData->accel_z,2));
 	float mmag = 1/sqrtf(powf(magData->x,2) + powf(magData->y,2) + powf(magData->z,2));
@@ -32,17 +33,17 @@ void quaternionAttitudeEst(quaternion *quat,ICM40609D_Data_t *icmData,MMC5983MA_
 	float qz = (icmData->accel_z * mD) - (icmData->accel_x * mN) - magData->z;
 
 	float qmag = 1/sqrtf(powf(qw,2) + powf(qx,2) + powf(qy,2) + powf(qz,2));
-	quat->qw = qw*qmag;
-	quat->qx = qx*qmag;
-	quat->qy = qy*qmag;
-	quat->qz = qz*qmag;
+	q->qw = qw*qmag;
+	q->qx = qx*qmag;
+	q->qy = qy*qmag;
+	q->qz = qz*qmag;
 }
 
 void AttitudeEst(eulerAngle *ang,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData) {
-	quaternion quat = {0};
-	quaternionAttitudeEst(&quat,icmData,magData);
+	quat q = {0};
+	qernionAttitudeEst(&q,icmData,magData);
 
-	ang->x = atan2(2*(quat.qw*quat.qx+quat.qy*quat.qz), 1-2*(powf(quat.qx,2) + powf(quat.qy,2)));
-	ang->y = asin(2*(quat.qw*quat.qy - quat.qz*quat.qx));
-	ang->z = atan2(2*(quat.qw*quat.qz+quat.qx*quat.qy), 1-2*(powf(quat.qy,2) + powf(quat.qz,2)));
+	ang->x = atan2(2*(q.qw*q.qx+q.qy*q.qz), 1-2*(powf(q.qx,2) + powf(q.qy,2)));
+	ang->y = asin(2*(q.qw*q.qy - q.qz*q.qx));
+	ang->z = atan2(2*(q.qw*q.qz+q.qx*q.qy), 1-2*(powf(q.qy,2) + powf(q.qz,2)));
 }

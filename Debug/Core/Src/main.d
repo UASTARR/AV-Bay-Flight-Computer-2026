@@ -63,7 +63,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Src/..\attitude_estimation\attitude_estimation.h \
  ../Core/Src/..\attitude_estimation\..\sensors\icm40609d.h \
  ../Core/Src/..\attitude_estimation\..\sensors\mmc5983ma.h \
- ../Core/Src/..\EKF\prediction.h
+ ../Core/Src/..\EKF\prediction.h ../Middlewares/ST/ARM/DSP/Inc/arm_math.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -139,3 +140,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Src/..\attitude_estimation\..\sensors\icm40609d.h:
 ../Core/Src/..\attitude_estimation\..\sensors\mmc5983ma.h:
 ../Core/Src/..\EKF\prediction.h:
+../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
