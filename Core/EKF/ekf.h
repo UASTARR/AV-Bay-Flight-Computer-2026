@@ -8,11 +8,11 @@
 #ifndef EKF_EKF_H_
 #define EKF_EKF_H_
 
-#include "prediction.h"
+#include "arm_math.h"
 
 typedef struct {
-	quat q; //Attitude
-	quat qold; //Attitude old
+	float32_t q[4]; //Attitude
+	float32_t qold[4]; //Attitude old
 } ekfState;
 
 typedef struct {

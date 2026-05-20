@@ -168,7 +168,6 @@ int main(void)
 
 //	    printf("--- Attitude Estimation ---\r\n");
 //		printf("  Angles:   %.4f  %.4f  %.4f G\r\n", ang.x, ang.y, ang.z);
-	    prediction();
 	    HAL_Delay(500);
   }
   /* USER CODE END 3 */

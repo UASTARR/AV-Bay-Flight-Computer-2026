@@ -1,2 +1,2 @@
-../Core/EKF/prediction.c:13:6:init	1
-../Core/EKF/prediction.c:17:6:prediction	1
+../Core/EKF/prediction.c:16:6:init	1
+../Core/EKF/prediction.c:20:6:predictAttitude	1

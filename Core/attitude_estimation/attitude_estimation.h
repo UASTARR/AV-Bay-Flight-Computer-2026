@@ -10,6 +10,7 @@
 
 #include "..\sensors\icm40609d.h"
 #include "..\sensors\mmc5983ma.h"
+#include "..\EKF\ekf.h"
 
 
 
@@ -19,7 +20,7 @@ typedef struct {
 	float z;
 } eulerAngle;
 
-void quaternionAttitudeEst(quaternion *quat,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
+void quaternionAttitudeEst(quat *quat,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
 void AttitudeEst(eulerAngle *ang,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
 
 #endif /* ATTITUDE_ESTIMATION_ATTITUDE_ESTIMATION_H_ */

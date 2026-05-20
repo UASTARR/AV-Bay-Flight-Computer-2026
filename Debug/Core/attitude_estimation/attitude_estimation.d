@@ -44,7 +44,8 @@ Core/attitude_estimation/attitude_estimation.o: \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
- ../Core/attitude_estimation/..\sensors\mmc5983ma.h
+ ../Core/attitude_estimation/..\sensors\mmc5983ma.h \
+ ../Core/attitude_estimation/..\EKF\ekf.h
 ../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
@@ -91,3 +92,4 @@ Core/attitude_estimation/attitude_estimation.o: \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h:
 ../Core/attitude_estimation/..\sensors\mmc5983ma.h:
+../Core/attitude_estimation/..\EKF\ekf.h:

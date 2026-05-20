@@ -1,2 +1,2 @@
-../Core/EKF/prediction.c:13:6:init	4	static
-../Core/EKF/prediction.c:17:6:prediction	4	static
+../Core/EKF/prediction.c:16:6:init	16	static
+../Core/EKF/prediction.c:20:6:predictAttitude	96	static
