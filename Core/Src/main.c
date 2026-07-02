@@ -138,16 +138,17 @@ int main(void)
 	    MS5611_Data_t   ms   = {0};
 	    ICM40609D_Data_t icm = {0};
 	    MMC5983MA_Data_t mag = {0};
-	    eulerAngle ang = {0};
+	    float32_t q[4] = {0};
 
 	    BME680_Read_All(&bme);
 	    MS5611_Read_All(&ms);
 	    ICM40609D_Read_All(&icm);
 	    MMC5983MA_Read_All(&mag);
-	    AttitudeEst(&ang,&icm,&mag);
+	    //AttitudeEst(&ang,&icm,&mag);
+	    qernionAttitudeEst(&q,&icm,&mag);
 
 //	    printf("--- BME680 ---\r\n");
-//	    printf("  Temp:  %.2f C\r\n",  bme.temperature);
+//	    printf(">Temp:%.2f\r\n", bme.temperature);
 //	    printf("  Press: %.2f hPa\r\n", bme.pressure);
 //	    printf("  Hum:   %.2f %%\r\n", bme.humidity);
 //	    printf("  Gas:   %.0f ohm\r\n", bme.gas);
@@ -158,16 +159,21 @@ int main(void)
 //	    printf("  Alt:   %.2f m\r\n",   ms.altitude);
 //
 //	    printf("--- ICM-40609D ---\r\n");
-//	    printf("  Accel: %.3f  %.3f  %.3f g\r\n",   icm.accel_x, icm.accel_y, icm.accel_z);
+	    printf(">ax:%.3f\r\n>ay:%.3f\r\n>az:%.3f\r\n",   icm.accel_x, icm.accel_y, icm.accel_z);
 //	    printf("  Gyro:  %.2f  %.2f  %.2f dps\r\n", icm.gyro_x,  icm.gyro_y,  icm.gyro_z);
 //	    printf("  Temp:  %.1f C\r\n", icm.temp);
 //
 //	    printf("--- MMC5983MA ---\r\n");
-//	    printf("  Mag:   %.4f  %.4f  %.4f G\r\n", mag.x, mag.y, mag.z);
+	    printf(">mx:%.4f\r\n>my:%.4f\r\n>mz:%.4f\r\n", mag.x, mag.y, mag.z);
+	    float bearing = atan2(mag.y,-mag.x)*180/3.14;
+	    bearing = (bearing>=0)?bearing:bearing+360;
+	    printf(">bearing:%.4f\r\n",bearing);
 //	    printf("  Temp:  %.1f C\r\n\r\n", mag.temp);
 
 //	    printf("--- Attitude Estimation ---\r\n");
-//		printf("  Angles:   %.4f  %.4f  %.4f G\r\n", ang.x, ang.y, ang.z);
+//	    printf(">3D|my_super_cube:S:cube:W:1:D:0.7:H:0.1:C:blue:Q:%.4f:%.4f:%.4f:%.4f\r\n", q.qw, -q.qy, -q.qz, -q.qx);
+	    printf(">3D|my_super_cube:S:cube:W:1:D:0.7:H:0.1:C:blue:Q:%.4f:%.4f:%.4f:%.4f\r\n", q[1], q[3], q[2], q[0]);
+//		printf("Angles:%.4f  %.4f  %.4f\r\n", ang.x, ang.y, ang.z);
 	    HAL_Delay(500);
   }
   /* USER CODE END 3 */

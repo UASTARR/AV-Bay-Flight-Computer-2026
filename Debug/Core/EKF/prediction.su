@@ -1,3 +1,6 @@
-../Core/EKF/prediction.c:16:6:init	72	static
-../Core/EKF/prediction.c:38:6:predictAttitude	296	static
-../Core/EKF/prediction.c:107:6:fastqEstimation	72	static
+../Core/EKF/prediction.c:17:6:crossProd	40	static
+../Core/EKF/prediction.c:25:6:outerProd	88	static
+../Core/EKF/prediction.c:38:6:init	72	static
+../Core/EKF/prediction.c:63:6:predictAttitude	456	static
+../Core/EKF/prediction.c:158:6:correctAttitude	728	static
+../Core/EKF/prediction.c:284:6:fastqEstimation	72	static

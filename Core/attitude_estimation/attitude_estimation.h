@@ -20,7 +20,7 @@ typedef struct {
 	float z;
 } eulerAngle;
 
-void quaternionAttitudeEst(quat *quat,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
+void qernionAttitudeEst(float32_t *quat,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
 void AttitudeEst(eulerAngle *ang,ICM40609D_Data_t *icmData,MMC5983MA_Data_t *magData);
 
 #endif /* ATTITUDE_ESTIMATION_ATTITUDE_ESTIMATION_H_ */

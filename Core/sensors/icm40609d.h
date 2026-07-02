@@ -13,18 +13,8 @@ typedef struct {
     float temp;
 } ICM40609D_Data_t;
 
-typedef struct {
-	_Bool xsign;
-	_Bool ysign;
-	_Bool zsign;
-	int xindex;
-	int yindex;
-	int zindex;
-} imuZeroData;
-
 
 void ICM40609D_Init(void);
 void ICM40609D_Read_All(ICM40609D_Data_t *data);
-void ICM40609D_Zero(void);
 
 #endif // ICM40609D_H

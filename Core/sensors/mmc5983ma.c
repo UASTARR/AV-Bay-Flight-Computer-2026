@@ -1,4 +1,5 @@
 #include "mmc5983ma.h"
+#include "arm_math.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -26,6 +27,13 @@ extern SPI_HandleTypeDef hspi1;
 // 18-bit unsigned, center at 2^17 = 131072, full scale ±8 Gauss
 #define MMC_SENSITIVITY 16384.0f  // LSB/Gauss
 
+//Correction Values
+float32_t b[3] = {42.260479,-13.115261,3.142675};
+const float32_t AData[9] = {
+		0.571094,-0.097216,0.026305,
+		-0.097216,0.601948,0.048822,
+		0.026305,0.048822,0.474632
+};
 static void MMC_WriteReg(uint8_t reg, uint8_t val)
 {
     uint8_t tx[2] = { reg & 0x7F, val }; // bit 7 = 0 for write
@@ -61,9 +69,7 @@ void MMC5983MA_Init(void)
 
     // SET operation to remove residual magnetization
 	MMC_WriteReg(MMC_CTRL0, 0x10); // RESET
-	HAL_Delay(1);
 	MMC_WriteReg(MMC_CTRL0, 0x08); // SET
-	HAL_Delay(1);
 
 	MMC_WriteReg(MMC_CTRL1, 0x00);
 
@@ -94,9 +100,18 @@ void MMC5983MA_Read_All(MMC5983MA_Data_t *data)
     uint32_t y_raw = ((uint32_t)raw[2] << 10) | ((uint32_t)raw[3] << 2) | ((raw[6] >> 4) & 0x03);
     uint32_t z_raw = ((uint32_t)raw[4] << 10) | ((uint32_t)raw[5] << 2) | ((raw[6] >> 2) & 0x03);
 
-    data->x = -((float)x_raw - 131072.0f) / MMC_SENSITIVITY;
-    data->y = -((float)y_raw - 131072.0f) / MMC_SENSITIVITY;
-    data->z = -((float)z_raw - 131072.0f) / MMC_SENSITIVITY;
+    //
+//    float32_t m[3] = {((float)y_raw - 131072.0f) / MMC_SENSITIVITY *100 - 19.0f,
+//    		((float)x_raw - 131072.0f) / MMC_SENSITIVITY *100 - 10.5f,
+//			-((float)z_raw - 131072.0f) / MMC_SENSITIVITY *100};
+//
+//    data->x = m[0];
+//    data->y = m[1];
+//    data->z = m[2];
+
+    data->y = -(((float)x_raw - 131072.0f) / MMC_SENSITIVITY *100 - 6.5f - 5.5f + 2.5f);
+	data->x = -(((float)y_raw - 131072.0f) / MMC_SENSITIVITY *100 - 6.5f - 4.5f + 3.0f);
+	data->z = (((float)z_raw - 131072.0f) / MMC_SENSITIVITY *100 - 4.5f);
 
     // Read temperature: 1 byte, 0.8°C/LSB, offset at 0 = -75°C
     MMC_WriteReg(MMC_CTRL0, MMC_TM_T);

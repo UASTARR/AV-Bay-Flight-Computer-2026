@@ -13,11 +13,8 @@ extern SPI_HandleTypeDef hspi1;
 
 #define ICM_WHO_AM_I_VAL       0x3B
 
-// idk if this is right rn
 #define ICM_ACCEL_SENS  2048.0f
 #define ICM_GYRO_SENS   16.4f
-
-imuZeroData imuZero = {0,0,0,3,5,7};
 
 static void ICM_WriteReg(uint8_t reg, uint8_t val)
 {
@@ -63,47 +60,10 @@ void ICM40609D_Init(void)
 
     ICM_WriteReg(ICM_REG_GYRO_CONFIG0, (0x00 << 5) | (0x000 << 3) | 0x06);
 
-    ICM_WriteReg(ICM_REG_ACCEL_CONFIG0, (0x01 << 5) | 0x0F);
+    ICM_WriteReg(ICM_REG_ACCEL_CONFIG0, (0x01 << 5) | 0x06);
 
     ICM_WriteReg(ICM_REG_PWR_MGMT0, 0x0F);
     HAL_Delay(10);
-
-    ICM40609D_imuZero();
-}
-
-void ICM40609D_imuZero() {
-	ICM40609D_Data_t icm = {0};
-	ICM40609D_Read_All(&icm);
-	// Z up or down (flat on table face up or down)
-	if (fabs(icm.accel_z)>fabs(icm.accel_y) && fabs(icm.accel_z)>fabs(icm.accel_x)) {
-		imuZero.xsign = icm.accel_z<0;
-		imuZero.ysign = 0;
-		imuZero.zsign = icm.accel_z<0;
-
-		imuZero.xindex = 3;
-		imuZero.yindex = 5;
-		imuZero.zindex = 7;
-	} else
-	// Y up or down (can connectors facing roof or table)
-	if (fabs(icm.accel_y)>fabs(icm.accel_z) && fabs(icm.accel_y)>fabs(icm.accel_x)) {
-		imuZero.xsign = icm.accel_y<0;
-		imuZero.ysign = 1;
-		imuZero.zsign = icm.accel_y<0;
-
-		imuZero.xindex = 3;
-		imuZero.yindex = 7;
-		imuZero.zindex = 5;
-	} else
-		// X up or down (USB connector facing roof or table)
-	if (fabs(icm.accel_x)>fabs(icm.accel_z) && fabs(icm.accel_x)>fabs(icm.accel_y)) {
-			imuZero.xsign = icm.accel_x>0;
-			imuZero.ysign = 0;
-			imuZero.zsign = icm.accel_x<0;
-
-			imuZero.xindex = 7;
-			imuZero.yindex = 5;
-			imuZero.zindex = 3;
-		}
 }
 
 void ICM40609D_Read_All(ICM40609D_Data_t *data)
@@ -112,17 +72,17 @@ void ICM40609D_Read_All(ICM40609D_Data_t *data)
     ICM_ReadRegs(ICM_REG_TEMP_DATA1, raw, 14);
 
     int16_t temp_raw  = (int16_t)((raw[0]  << 8) | raw[1]);
-    int16_t accel_x   = (int16_t)((raw[imuZero.xindex-1]  << 8) | raw[imuZero.xindex]); //default index 3
-    int16_t accel_y   = (int16_t)((raw[imuZero.yindex-1]  << 8) | raw[imuZero.yindex]); //default index 5
-    int16_t accel_z   = (int16_t)((raw[imuZero.zindex-1]  << 8) | raw[imuZero.zindex]); //default index 7
+    int16_t accel_x   = ((int16_t)((raw[4]  << 8) | raw[5])); //default index 3
+    int16_t accel_y   = ((int16_t)((raw[2]  << 8) | raw[3])); //default index 5
+    int16_t accel_z   = -((int16_t)((raw[6]  << 8) | raw[7])); //default index 7
     int16_t gyro_x    = (int16_t)((raw[8]  << 8) | raw[9]);
     int16_t gyro_y    = (int16_t)((raw[10] << 8) | raw[11]);
     int16_t gyro_z    = (int16_t)((raw[12] << 8) | raw[13]);
 
     data->temp    = (float)temp_raw  / 132.48f + 25.0f;
-    data->accel_x = (float)accel_x  / ICM_ACCEL_SENS * (float)(imuZero.xsign?-1.0:1.0);
-    data->accel_y = (float)accel_y  / ICM_ACCEL_SENS * (float)(imuZero.ysign?-1.0:1.0);
-    data->accel_z = (float)accel_z  / ICM_ACCEL_SENS * (float)(imuZero.zsign?-1.0:1.0);
+    data->accel_x = (float)accel_x  / ICM_ACCEL_SENS;
+    data->accel_y = (float)accel_y  / ICM_ACCEL_SENS;
+    data->accel_z = (float)accel_z  / ICM_ACCEL_SENS;
     data->gyro_x  = (float)gyro_x   / ICM_GYRO_SENS;
     data->gyro_y  = (float)gyro_y   / ICM_GYRO_SENS;
     data->gyro_z  = (float)gyro_z   / ICM_GYRO_SENS;

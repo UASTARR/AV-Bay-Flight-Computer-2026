@@ -1,3 +1,6 @@
-../Core/EKF/prediction.c:16:6:init	4
-../Core/EKF/prediction.c:38:6:predictAttitude	1
-../Core/EKF/prediction.c:107:6:fastqEstimation	1
+../Core/EKF/prediction.c:17:6:crossProd	1
+../Core/EKF/prediction.c:25:6:outerProd	1
+../Core/EKF/prediction.c:38:6:init	4
+../Core/EKF/prediction.c:63:6:predictAttitude	1
+../Core/EKF/prediction.c:158:6:correctAttitude	1
+../Core/EKF/prediction.c:284:6:fastqEstimation	1

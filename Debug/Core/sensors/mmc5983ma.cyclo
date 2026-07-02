@@ -1,4 +1,4 @@
-../Core/sensors/mmc5983ma.c:29:13:MMC_WriteReg	1
-../Core/sensors/mmc5983ma.c:37:13:MMC_ReadRegs	1
-../Core/sensors/mmc5983ma.c:48:6:MMC5983MA_Init	2
-../Core/sensors/mmc5983ma.c:76:6:MMC5983MA_Read_All	5
+../Core/sensors/mmc5983ma.c:37:13:MMC_WriteReg	1
+../Core/sensors/mmc5983ma.c:45:13:MMC_ReadRegs	1
+../Core/sensors/mmc5983ma.c:56:6:MMC5983MA_Init	2
+../Core/sensors/mmc5983ma.c:82:6:MMC5983MA_Read_All	5
