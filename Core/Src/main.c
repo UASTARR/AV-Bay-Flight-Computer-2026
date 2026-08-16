@@ -40,6 +40,7 @@
 #include "..\software_i2c\stm32_sw_i2c.h"
 #include "..\attitude_estimation\attitude_estimation.h"
 #include "..\EKF\prediction.h"
+#include "..\firing_channels\channel_control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -126,6 +127,8 @@ int main(void)
   ICM40609D_Init();
   MMC5983MA_Init();
   /* USER CODE END 2 */
+
+  fire_channel(1);
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

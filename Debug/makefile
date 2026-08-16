@@ -16,6 +16,7 @@ RM := rm -rf
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Core/software_i2c/subdir.mk
 -include Core/sensors/subdir.mk
+-include Core/firing_channels/subdir.mk
 -include Core/attitude_estimation/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk

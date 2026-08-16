@@ -1,4 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/firing_channels/channel_control.o: \
+ ../Core/firing_channels/channel_control.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -38,38 +39,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
- ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/can.h ../Core/Inc/i2c.h \
- ../Core/Inc/sdmmc.h ../Core/Inc/spi.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../USB_DEVICE/App/usb_device.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h \
- ../USB_DEVICE/App/usbd_cdc_if.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
- ../Core/Src/..\sensors\bme680.h \
- ../Core/Src/..\sensors\..\software_i2c\stm32_sw_i2c.h \
- ../Core/Src/..\sensors\..\software_i2c\dwt_stm32_delay.h \
- ../Core/Src/..\sensors\..\software_i2c\dwt_stm32_delay.h \
- ../Core/Src/..\sensors\bme68x.h ../Core/Src/..\sensors\bme68x_defs.h \
- ../Core/Src/..\sensors\ms5611.h ../Core/Src/..\sensors\icm40609d.h \
- ../Core/Src/..\sensors\mmc5983ma.h \
- ../Core/Src/..\software_i2c\dwt_stm32_delay.h \
- ../Core/Src/..\software_i2c\stm32_sw_i2c.h \
- ../Core/Src/..\attitude_estimation\attitude_estimation.h \
- ../Core/Src/..\attitude_estimation\..\sensors\icm40609d.h \
- ../Core/Src/..\attitude_estimation\..\sensors\mmc5983ma.h \
- ../Core/Src/..\attitude_estimation\..\EKF\ekf.h \
- ../Middlewares/ST/ARM/DSP/Inc/arm_math.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h \
- ../Core/Src/..\EKF\prediction.h ../Core/Src/..\EKF\ekf.h \
- ../Core/Src/..\EKF\..\sensors\icm40609d.h \
- ../Core/Src/..\EKF\..\sensors\mmc5983ma.h \
- ../Core/Src/..\firing_channels\channel_control.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -111,44 +81,3 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h:
-../Core/Inc/adc.h:
-../Core/Inc/main.h:
-../Core/Inc/can.h:
-../Core/Inc/i2c.h:
-../Core/Inc/sdmmc.h:
-../Core/Inc/spi.h:
-../Core/Inc/tim.h:
-../Core/Inc/usart.h:
-../USB_DEVICE/App/usb_device.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
-../USB_DEVICE/Target/usbd_conf.h:
-../Core/Inc/gpio.h:
-../USB_DEVICE/App/usbd_cdc_if.h:
-../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
-../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
-../Core/Src/..\sensors\bme680.h:
-../Core/Src/..\sensors\..\software_i2c\stm32_sw_i2c.h:
-../Core/Src/..\sensors\..\software_i2c\dwt_stm32_delay.h:
-../Core/Src/..\sensors\..\software_i2c\dwt_stm32_delay.h:
-../Core/Src/..\sensors\bme68x.h:
-../Core/Src/..\sensors\bme68x_defs.h:
-../Core/Src/..\sensors\ms5611.h:
-../Core/Src/..\sensors\icm40609d.h:
-../Core/Src/..\sensors\mmc5983ma.h:
-../Core/Src/..\software_i2c\dwt_stm32_delay.h:
-../Core/Src/..\software_i2c\stm32_sw_i2c.h:
-../Core/Src/..\attitude_estimation\attitude_estimation.h:
-../Core/Src/..\attitude_estimation\..\sensors\icm40609d.h:
-../Core/Src/..\attitude_estimation\..\sensors\mmc5983ma.h:
-../Core/Src/..\attitude_estimation\..\EKF\ekf.h:
-../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
-../Drivers/CMSIS/Include/cmsis_compiler.h:
-../Core/Src/..\EKF\prediction.h:
-../Core/Src/..\EKF\ekf.h:
-../Core/Src/..\EKF\..\sensors\icm40609d.h:
-../Core/Src/..\EKF\..\sensors\mmc5983ma.h:
-../Core/Src/..\firing_channels\channel_control.h:

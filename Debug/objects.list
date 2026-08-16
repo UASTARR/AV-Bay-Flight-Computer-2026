@@ -15,6 +15,7 @@
 "./Core/Src/usart.o"
 "./Core/Startup/startup_stm32f732retx.o"
 "./Core/attitude_estimation/attitude_estimation.o"
+"./Core/firing_channels/channel_control.o"
 "./Core/sensors/bme680.o"
 "./Core/sensors/bme68x.o"
 "./Core/sensors/icm40609d.o"
