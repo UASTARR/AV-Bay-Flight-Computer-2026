@@ -72,8 +72,8 @@ void ICM40609D_Read_All(ICM40609D_Data_t *data)
     ICM_ReadRegs(ICM_REG_TEMP_DATA1, raw, 14);
 
     int16_t temp_raw  = (int16_t)((raw[0]  << 8) | raw[1]);
-    int16_t accel_x   = ((int16_t)((raw[4]  << 8) | raw[5])); //default index 3
-    int16_t accel_y   = ((int16_t)((raw[2]  << 8) | raw[3])); //default index 5
+    int16_t accel_x   = ((int16_t)((raw[2]  << 8) | raw[3])); //default index 3
+    int16_t accel_y   = ((int16_t)((raw[4]  << 8) | raw[5])); //default index 5
     int16_t accel_z   = -((int16_t)((raw[6]  << 8) | raw[7])); //default index 7
     int16_t gyro_x    = (int16_t)((raw[8]  << 8) | raw[9]);
     int16_t gyro_y    = (int16_t)((raw[10] << 8) | raw[11]);

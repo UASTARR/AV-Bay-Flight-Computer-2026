@@ -22,4 +22,9 @@ typedef struct {
 	float32_t rnsd_w;
 } ekfState;
 
+typedef struct {
+	float32_t alt;
+	float32_t velo;
+} alt_filter;
+
 #endif /* EKF_EKF_H_ */

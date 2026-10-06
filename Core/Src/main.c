@@ -20,6 +20,8 @@
 #include "main.h"
 #include "adc.h"
 #include "can.h"
+#include "dma.h"
+#include "fatfs.h"
 #include "i2c.h"
 #include "sdmmc.h"
 #include "spi.h"
@@ -40,7 +42,9 @@
 #include "..\software_i2c\stm32_sw_i2c.h"
 #include "..\attitude_estimation\attitude_estimation.h"
 #include "..\EKF\prediction.h"
-#include "..\firing_channels\channel_control.h"
+#include "..\State_Machine\state.h"
+#include "..\sensors\sensor_logger.h"
+#include "..\EKF\altitude.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,10 +114,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC2_Init();
   MX_CAN1_Init();
   MX_I2C1_Init();
-  //MX_SDMMC1_SD_Init();
+  MX_SDMMC1_SD_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_TIM2_Init();
@@ -121,63 +126,71 @@ int main(void)
   MX_UART4_Init();
   MX_TIM1_Init();
   MX_USB_DEVICE_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   BME680_Init();
   MS5611_Init();
   ICM40609D_Init();
   MMC5983MA_Init();
-  /* USER CODE END 2 */
 
-  fire_channel(1);
+  uint32_t time = HAL_GetTick();
+  uint32_t timeLast = HAL_GetTick();
+
+  BME680_Data_t bme;
+  ICM40609D_Data_t icm;
+
+  stateParams state;
+  state.flightState = 0;
+  state.velo = 0;
+  state.accel[0] = 0;
+  state.accel[1] = 0;
+  state.accel[2] = 0;
+  state.baro = 0;
+
+  FATFS FatFs;         // File system object
+  FIL fil;             // File object
+  FRESULT fres;
+  UINT bytesWrote = 0;     // Variable to track written bytes
+
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
+	/* USER CODE BEGIN 3 */
+	  stateController(&state);
+	  if (time-timeLast>1000) {
+		  BME680_Read_All(&bme);
+		  state.baro = bme.altitude*3.28084;
+		  state.update = 1;
+	  }
 
-    /* USER CODE BEGIN 3 */
-	    BME680_Data_t   bme  = {0};
-	    MS5611_Data_t   ms   = {0};
-	    ICM40609D_Data_t icm = {0};
-	    MMC5983MA_Data_t mag = {0};
-	    float32_t q[4] = {0};
+	  ICM40609D_Read_All(&icm);
+	  state.accel[0] = state.T*state.accel[0] + (1-state.T)*icm.accel_x;
+	  state.accel[1] = state.T*state.accel[1] + (1-state.T)*icm.accel_y;
+	  state.accel[2] = state.T*state.accel[2] + (1-state.T)*icm.accel_z;
 
-	    BME680_Read_All(&bme);
-	    MS5611_Read_All(&ms);
-	    ICM40609D_Read_All(&icm);
-	    MMC5983MA_Read_All(&mag);
-	    //AttitudeEst(&ang,&icm,&mag);
-	    qernionAttitudeEst(&q,&icm,&mag);
+	  if (state.flightState<3) {
+		  state.vaccel = state.accel[0];
+	  } else {
+		  state.vaccel = (state.accel[0]+state.accel[1]+state.accel[2])/(3 + 0.1*abs(state.velo));
+	  }
 
-//	    printf("--- BME680 ---\r\n");
-//	    printf(">Temp:%.2f\r\n", bme.temperature);
-//	    printf("  Press: %.2f hPa\r\n", bme.pressure);
-//	    printf("  Hum:   %.2f %%\r\n", bme.humidity);
-//	    printf("  Gas:   %.0f ohm\r\n", bme.gas);
-//	    printf("  Alt:   %.2f m\r\n", bme.altitude);
-//
-//	    printf("--- MS5611 ---\r\n");
-//	    printf("  Press: %.2f hPa\r\n", ms.pressure);
-//	    printf("  Alt:   %.2f m\r\n",   ms.altitude);
-//
-//	    printf("--- ICM-40609D ---\r\n");
-	    printf(">ax:%.3f\r\n>ay:%.3f\r\n>az:%.3f\r\n",   icm.accel_x, icm.accel_y, icm.accel_z);
-//	    printf("  Gyro:  %.2f  %.2f  %.2f dps\r\n", icm.gyro_x,  icm.gyro_y,  icm.gyro_z);
-//	    printf("  Temp:  %.1f C\r\n", icm.temp);
-//
-//	    printf("--- MMC5983MA ---\r\n");
-	    printf(">mx:%.4f\r\n>my:%.4f\r\n>mz:%.4f\r\n", mag.x, mag.y, mag.z);
-	    float bearing = atan2(mag.y,-mag.x)*180/3.14;
-	    bearing = (bearing>=0)?bearing:bearing+360;
-	    printf(">bearing:%.4f\r\n",bearing);
-//	    printf("  Temp:  %.1f C\r\n\r\n", mag.temp);
+	char buffer[50] = "";
+	snprintf(buffer, sizeof(buffer), "Alt: %.2f, Baro: %.2f Velo: %.2f, Accel: %.2f %.2f %.2f\n", state.alt, state.baro, state.velo, state.accel[0], state.accel[1], state.accel[2]);
+	fres = logSensors(&FatFs,&fil,buffer,&bytesWrote);
 
-//	    printf("--- Attitude Estimation ---\r\n");
-//	    printf(">3D|my_super_cube:S:cube:W:1:D:0.7:H:0.1:C:blue:Q:%.4f:%.4f:%.4f:%.4f\r\n", q.qw, -q.qy, -q.qz, -q.qx);
-	    printf(">3D|my_super_cube:S:cube:W:1:D:0.7:H:0.1:C:blue:Q:%.4f:%.4f:%.4f:%.4f\r\n", q[1], q[3], q[2], q[0]);
-//		printf("Angles:%.4f  %.4f  %.4f\r\n", ang.x, ang.y, ang.z);
-	    HAL_Delay(500);
+	float altOld = state.alt;
+	float veloOld = state.velo;
+	float dt = (time-timeLast)*1000;
+	altFilter(&state,dt);
+	state.alt = state.Y*altOld + (1-state.Y)*state.alt;
+	state.velo = state.Y*veloOld + (1-state.Y)*state.velo;
+
+	timeLast = time;
+	time = HAL_GetTick();
   }
   /* USER CODE END 3 */
 }
@@ -278,6 +291,28 @@ void MPU_Config(void)
   /* Enables the MPU */
   HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM5 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM5)
+  {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
 
 /**

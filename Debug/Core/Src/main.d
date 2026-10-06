@@ -39,9 +39,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
- ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/can.h ../Core/Inc/i2c.h \
- ../Core/Inc/sdmmc.h ../Core/Inc/spi.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../USB_DEVICE/App/usb_device.h \
+ ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/can.h ../Core/Inc/dma.h \
+ ../FATFS/App/fatfs.h ../Middlewares/Third_Party/FatFs/src/ff.h \
+ ../Middlewares/Third_Party/FatFs/src/integer.h ../FATFS/Target/ffconf.h \
+ ../FATFS/Target/bsp_driver_sd.h \
+ ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
+ ../Middlewares/Third_Party/FatFs/src/diskio.h \
+ ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/sd_diskio.h \
+ ../Core/Inc/i2c.h ../Core/Inc/sdmmc.h ../Core/Inc/spi.h \
+ ../Core/Inc/tim.h ../Core/Inc/usart.h ../USB_DEVICE/App/usb_device.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h \
  ../USB_DEVICE/App/usbd_cdc_if.h \
@@ -69,7 +75,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Src/..\EKF\prediction.h ../Core/Src/..\EKF\ekf.h \
  ../Core/Src/..\EKF\..\sensors\icm40609d.h \
  ../Core/Src/..\EKF\..\sensors\mmc5983ma.h \
- ../Core/Src/..\firing_channels\channel_control.h
+ ../Core/Src/..\State_Machine\state.h \
+ ../Core/Src/..\State_Machine\..\EKF\ekf.h \
+ ../Core/Src/..\sensors\sensor_logger.h ../FATFS/App/FatFs.h \
+ ../Core/Src/..\EKF\altitude.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -114,6 +123,16 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/adc.h:
 ../Core/Inc/main.h:
 ../Core/Inc/can.h:
+../Core/Inc/dma.h:
+../FATFS/App/fatfs.h:
+../Middlewares/Third_Party/FatFs/src/ff.h:
+../Middlewares/Third_Party/FatFs/src/integer.h:
+../FATFS/Target/ffconf.h:
+../FATFS/Target/bsp_driver_sd.h:
+../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h:
+../Middlewares/Third_Party/FatFs/src/diskio.h:
+../Middlewares/Third_Party/FatFs/src/ff.h:
+../FATFS/Target/sd_diskio.h:
 ../Core/Inc/i2c.h:
 ../Core/Inc/sdmmc.h:
 ../Core/Inc/spi.h:
@@ -151,4 +170,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Src/..\EKF\ekf.h:
 ../Core/Src/..\EKF\..\sensors\icm40609d.h:
 ../Core/Src/..\EKF\..\sensors\mmc5983ma.h:
-../Core/Src/..\firing_channels\channel_control.h:
+../Core/Src/..\State_Machine\state.h:
+../Core/Src/..\State_Machine\..\EKF\ekf.h:
+../Core/Src/..\sensors\sensor_logger.h:
+../FATFS/App/FatFs.h:
+../Core/Src/..\EKF\altitude.h:
